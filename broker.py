@@ -11,10 +11,11 @@ class AlpacaClient(object):
         self.positions = sorted([p.symbol for p in self.api.list_positions()])
 
         # close any open orders
-        for order in self.api.list_orders(status="open"):
-            self.api.cancel_order(order.id)
+        self.api.cancel_all_orders()
 
     def rebalance(self, symbols: List[str]) -> None:
+        self.api.cancel_all_orders()
+        
         # check for any change
         symbols.sort()
         if symbols == self.positions:
@@ -51,7 +52,6 @@ class AlpacaClient(object):
             if order.qty != order.filled_qty:
                 print(f"WARNING: Order {order.symbol} ({order.status}) "
                       f"only filled {order.filled_qty} (target {order.qty})")
-        
 
     def await_market_open(self):
         print("waiting for market open")
@@ -67,3 +67,18 @@ class AlpacaClient(object):
             time.sleep(300)
 
         print("market is open")
+
+    def await_market_close(self):
+        print("waiting for market close")
+        clock = self.api.get_clock()
+        close = clock.next_close.replace(tzinfo=datetime.timezone.utc).timestamp()
+
+        while clock.is_open:
+            clock = self.api.get_clock()
+            curr_time = clock.timestamp.replace(tzinfo=datetime.timezone.utc).timestamp()
+            time_to_open = (close - curr_time) // 60
+
+            print(f"{time_to_open} minutes til market closes")
+            time.sleep(300)
+
+        print("market is closed")
