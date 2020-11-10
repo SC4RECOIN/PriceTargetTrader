@@ -1,7 +1,7 @@
 import json
 import os
 import pandas as pd
-from iex import get_price_target
+from iex import get_price_target, get_price
 from broker import AlpacaClient
 
 # load config
@@ -21,13 +21,15 @@ while True:
 
     new_positions = []
     for stock in stocks_df["Symbol"]:
-        price_target = get_price_target(stock)
+        try:
+            pt = get_price_target(stock)
+            price = get_price(stock)
+            chg = pt.price_target_average / price - 1
 
-        if (
-            price_target is not None
-            and price_target.price_target_average > target_thresh
-        ):
-            new_positions.append(stock)
+            if pt is not None and chg > target_thresh:
+                new_positions.append(stock)
+        except Exception as e:
+            print(f"{stock} failed: {e}")
 
     # enter positions
     alpaca_client.rebalance(new_positions)

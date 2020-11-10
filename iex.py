@@ -31,3 +31,8 @@ def get_price_target(symbol: str) -> Union[PriceTaget, None]:
         )
     except:
         return None
+
+
+def get_price(symbol: str) -> float:
+    stock = Stock(symbol)
+    return stock.get_price()
