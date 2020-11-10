@@ -43,6 +43,11 @@ class AlpacaClient(object):
         for symbol in symbols:
             quote = self.api.get_last_quote(symbol)
             qty = target_notional // quote.askprice
+
+            if qyt == 0:
+                print(f"WARNING: cannot buy 0 {symbol}")
+                continue
+
             self.api.submit_order(symbol, qty, "buy", "market", "day")
 
         # wait for orders to fill
