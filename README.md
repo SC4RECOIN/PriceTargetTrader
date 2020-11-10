@@ -23,4 +23,8 @@ This request requires at least a launch account ($20/month) with IEXCloud. Simil
 [Alpaca](https://alpaca.markets/) was chosen as the broker as they are easy to work with and you can open up a paper account without account verification. 
 
 
+### Config
+The config will be loaded as env variables. The IEXCloud and Alpaca SDK will see these variables and use them. Update `config.json` with your keys and change the endpoints if you want to move from paper trading to live.
+
+
 __Requires Python > 3.7__

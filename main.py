@@ -7,7 +7,6 @@ from iex import get_price_target
 with open("config.json") as f:
     config = json.load(f)
     for key, value in config.items():
-        os.environ[key] = value
+        os.environ[key] = str(value)
 
 price_taget = get_price_target('AAPL')
-print(price_taget)
