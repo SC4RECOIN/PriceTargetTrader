@@ -1,7 +1,8 @@
 {
-    "IEX_KEY": "iex_key",
+    "IEX_TOKEN": "iex_key",
     "IEX_API": "https://cloud.iexapis.com/v1/",
-    "ALPACA_API": "https://paper-api.alpaca.markets",
-    "ALPACA_KEY": "alpcaa_key",
-    "ALPACA_SECRET": "alpaca_secret"
+    "APCA_API_BASE_URL": "https://paper-api.alpaca.markets",
+    "APCA_API_KEY_ID": "alpaca_key",
+    "APCA_API_SECRET_KEY": "alpaca_secret",
+    "PRICE_TARGET_THRES": 0.1
 }
