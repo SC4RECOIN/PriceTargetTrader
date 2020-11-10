@@ -1,0 +1,2 @@
+iexfinance==0.4.3
+alpaca-trade-api==0.51.0
