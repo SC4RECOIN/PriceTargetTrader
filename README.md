@@ -1,11 +1,15 @@
 # Price Target Trader
-Hold stocks with price targets above a set threshold and sell when the fall below.
+
+Holds stocks with price targets above a set threshold. Rebalances everyday at market open.
 
 ## Data Source
-Price target data is being pulled from [IEXCloud](https://iexcloud.io/docs/api/#price-target). 
+
+Price target data is being pulled from [IEXCloud](https://iexcloud.io/docs/api/#price-target).
+
 ```
 GET /stock/{symbol}/price-target
 ```
+
 ```json
 {
   "symbol": "AAPL",
@@ -17,14 +21,15 @@ GET /stock/{symbol}/price-target
   "currency": "USD"
 }
 ```
-This request requires at least a launch account ($20/month) with IEXCloud. Similar data can be found at [finnhub.io](https://finnhub.io/docs/api#price-target) for free, however, I found the IEXCloud data to be more up to date.
+
+This request requires at least a launch account (\$20/month) with IEXCloud. Similar data can be found at [finnhub.io](https://finnhub.io/docs/api#price-target) for free, however, I found the IEXCloud data to be more up to date.
 
 ## Paper Trading
-[Alpaca](https://alpaca.markets/) was chosen as the broker as they are easy to work with and you can open up a paper account without account verification. 
 
+[Alpaca](https://alpaca.markets/) was chosen as the broker as they are easy to work with and you can open up a paper account without account verification.
 
 ### Config
+
 The config will be loaded as env variables. The IEXCloud and Alpaca SDK will see these variables and use them. Update `config.json` with your keys and change the endpoints if you want to move from paper trading to live.
 
-
-__Requires Python > 3.7__
+**Requires Python >= 3.7**
