@@ -32,5 +32,6 @@ while True:
             print(f"{stock} failed: {e}")
 
     # enter positions
+    print(f"entering {len(new_positions)} new positions")
     alpaca_client.rebalance(new_positions)
     alpaca_client.await_market_close()
