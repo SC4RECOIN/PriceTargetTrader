@@ -21,3 +21,6 @@ This request requires at least a launch account ($20/month) with IEXCloud. Simil
 
 ## Paper Trading
 [Alpaca](https://alpaca.markets/) was chosen as the broker as they are easy to work with and you can open up a paper account without account verification. 
+
+
+__Requires Python > 3.7__
