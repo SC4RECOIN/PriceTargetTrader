@@ -32,4 +32,16 @@ This request requires at least a launch account (\$20/month) with IEXCloud. Simi
 
 The config will be loaded as env variables. The IEXCloud and Alpaca SDK will see these variables and use them. Update `config.json` with your keys and change the endpoints if you want to move from paper trading to live. Also, set `PRICE_TARGET_THRES` (how far the average price target is from the current price) and `MAX_HOLD` (the maximum number of positions you can have). The price targets will be sorted and the top n=MAX_HOLD will be taken. There can be less than MAX_HOLD if not enough stocks reach the desired threshold.
 
+```json
+{
+  "IEX_TOKEN": "iex_key",
+  "IEX_API": "https://cloud.iexapis.com/v1/",
+  "APCA_API_BASE_URL": "https://paper-api.alpaca.markets",
+  "APCA_API_KEY_ID": "alpaca_key",
+  "APCA_API_SECRET_KEY": "alpaca_secret",
+  "PRICE_TARGET_THRES": 0.1,
+  "MAX_HOLD": 20
+}
+```
+
 **Requires Python >= 3.7**
