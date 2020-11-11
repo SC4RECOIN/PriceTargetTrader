@@ -30,7 +30,7 @@ This request requires at least a launch account (\$20/month) with IEXCloud. Simi
 
 ### Config
 
-The config will be loaded as env variables. The IEXCloud and Alpaca SDK will see these variables and use them. Update `config.json` with your keys and change the endpoints if you want to move from paper trading to live. Also, set `PRICE_TARGET_THRES` (how far the average price target is from the current price) and `MAX_HOLD` (the maximum number of positions you can have). The price targets will be sorted and the top n=MAX_HOLD will be taken. There can be less than MAX_HOLD if not enough stocks reach the desired threshold.
+The config will be loaded as env variables. The IEXCloud and Alpaca SDK will see these variables and use them. Update `config.json` with your keys and change the endpoints if you want to move from paper trading to live. Also, set `PRICE_TARGET_THRES` (how far the average price target is from the current price) and `MAX_HOLD` (the maximum number of positions you can have) to your desired behaviour. The price targets will be sorted and the top n=MAX_HOLD will be taken. There can be less than MAX_HOLD if not enough stocks reach the desired threshold.
 
 ```json
 {
