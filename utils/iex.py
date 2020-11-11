@@ -5,7 +5,7 @@ from typing import Union
 
 
 @dataclass
-class PriceTaget:
+class PriceTarget:
     symbol: str
     updated_date: datetime
     price_target_average: float
@@ -15,12 +15,12 @@ class PriceTaget:
     currency: str
 
 
-def get_price_target(symbol: str) -> Union[PriceTaget, None]:
+def get_price_target(symbol: str) -> Union[PriceTarget, None]:
     try:
         stock = Stock(symbol)
         pt = stock.get_price_target()
 
-        return PriceTaget(
+        return PriceTarget(
             symbol=pt["symbol"],
             updated_date=datetime.strptime(pt["updatedDate"], "%Y-%m-%d"),
             price_target_average=pt["priceTargetAverage"],
