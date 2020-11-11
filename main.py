@@ -1,8 +1,9 @@
 import json
 import os
 import pandas as pd
-from iex import get_price_target, get_price
-from broker import AlpacaClient
+from colorama import Fore, Style
+from utils.iex import get_price_target, get_price
+from utils.broker import AlpacaClient
 
 # load config
 with open("config.json") as f:
@@ -15,21 +16,33 @@ stocks_df = pd.read_csv("s&p_500.csv")
 
 alpaca_client = AlpacaClient()
 target_thresh = float(os.environ["PRICE_TARGET_THRES"])
+max_hold = float(os.environ["MAX_HOLD"])
 
 while True:
     alpaca_client.await_market_open()
 
     new_positions = []
-    for stock in stocks_df["Symbol"]:
+    for idx, stock in enumerate(stocks_df["Symbol"]):
         try:
             pt = get_price_target(stock)
             price = get_price(stock)
             chg = pt.price_target_average / price - 1
 
-            if pt is not None and chg > target_thresh:
-                new_positions.append(stock)
+            print(
+                f"{idx:<5} {stock:<5} - {price:<8}"
+                f"{Fore.Green if chg > target_thresh else Fore.WHITE}"
+                f"target: {pt.price_target_average:<5} -> {chg * 100:.2f}"
+                f"{Style.RESET_ALL}"
+            )
+
+            if chg > target_thresh:
+                new_positions.append((stock, chg))
         except Exception as e:
-            print(f"{stock} failed: {e}")
+            print(f"{Fore.RED}{stock} failed: {e}{Style.RESET_ALL}")
+
+    # sort and limit to max
+    new_positions.sort(key=lambda x: x[1], reverse=True)
+    new_positions = [pos[0] for pos in new_positions[:max_hold]]
 
     # enter positions
     print(f"entering {len(new_positions)} new positions")

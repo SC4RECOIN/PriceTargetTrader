@@ -1,3 +1,4 @@
 iexfinance==0.4.3
 alpaca-trade-api==0.51.0
 pandas==1.1.3
+colorama==0.4.4

@@ -1,4 +1,5 @@
 import alpaca_trade_api as tradeapi
+from colorama import Fore, Style
 import time
 import datetime
 from typing import List
@@ -44,8 +45,8 @@ class AlpacaClient(object):
             quote = self.api.get_last_quote(symbol)
             qty = target_notional // quote.askprice
 
-            if qyt == 0:
-                print(f"WARNING: cannot buy 0 {symbol}")
+            if qty == 0:
+                print(f"{Fore.RED}WARNING: cannot buy 0 {symbol}{Style.RESET_ALL}")
                 continue
 
             self.api.submit_order(symbol, qty, "buy", "market", "day")
@@ -56,8 +57,8 @@ class AlpacaClient(object):
         for order in orders:
             if order.qty != order.filled_qty:
                 print(
-                    f"WARNING: Order {order.symbol} ({order.status}) "
-                    f"only filled {order.filled_qty} (target {order.qty})"
+                    f"{Fore.RED}WARNING: Order {order.symbol} ({order.status}) "
+                    f"only filled {order.filled_qty} (target {order.qty}){Style.RESET_ALL}"
                 )
 
     def await_market_open(self):
