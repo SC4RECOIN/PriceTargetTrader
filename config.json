@@ -4,5 +4,6 @@
     "APCA_API_BASE_URL": "https://paper-api.alpaca.markets",
     "APCA_API_KEY_ID": "alpaca_key",
     "APCA_API_SECRET_KEY": "alpaca_secret",
-    "PRICE_TARGET_THRES": 0.1
+    "PRICE_TARGET_THRES": 0.1,
+    "MAX_HOLD": 20
 }
