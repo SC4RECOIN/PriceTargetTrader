@@ -7,6 +7,7 @@ from utils.broker import AlpacaClient
 from utils.storage import PandasStorage, PriceTargetRow
 from datetime import datetime
 from typing import List
+from dataclasses import asdict
 
 
 # load config
@@ -45,14 +46,14 @@ while True:
 
             print(
                 f"{idx:<5} {stock:<5} - {price:<8}"
-                f"{Fore.Green if chg > target_thresh else Fore.WHITE}"
-                f"target: {pt.price_target_average:<5} -> {chg * 100:.2f}"
+                f"{Fore.GREEN if chg > target_thresh else Fore.WHITE}"
+                f"target: {pt.price_target_average:<5} -> {chg * 100:.2f}%"
                 f"{Style.RESET_ALL}"
             )
 
             # persist target later
             targets.append(
-                PriceTargetRow(**pt, date_fetched=today, current_price=price)
+                PriceTargetRow(date_fetched=today, current_price=price, **asdict(pt))
             )
 
             # add to positions if above thesh
