@@ -2,6 +2,8 @@ from abc import ABC, abstractmethod
 from colorama import Fore, Style
 import pandas as pd
 from typing import List
+from dataclasses import dataclass
+from datetime import datetime
 import os
 
 
@@ -43,7 +45,7 @@ class PandasStorage(Storage):
         if os.path.exists(save_path):
             self.df = pd.read_csv(save_path)
 
-    def insert_price_targets(self, targets: List[PriceTaget]) -> None:
+    def insert_price_targets(self, targets: List[PriceTargetRow]) -> None:
         new = pd.DataFrame(targets)
         self.df = self.df.append(new)
         self.df.to_csv(self.path, index=False)

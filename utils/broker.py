@@ -42,14 +42,17 @@ class AlpacaClient(object):
 
         # enter all positions
         for symbol in symbols:
-            quote = self.api.get_last_quote(symbol)
-            qty = target_notional // quote.askprice
+            try:
+                quote = self.api.get_last_quote(symbol)
+                qty = target_notional // quote.askprice
 
-            if qty == 0:
-                print(f"{Fore.RED}WARNING: cannot buy 0 {symbol}{Style.RESET_ALL}")
-                continue
+                if qty == 0:
+                    print(f"{Fore.RED}WARNING: cannot buy 0 {symbol}{Style.RESET_ALL}")
+                    continue
 
-            self.api.submit_order(symbol, qty, "buy", "market", "day")
+                self.api.submit_order(symbol, qty, "buy", "market", "day")
+            except Exception as e:
+                print(f"{Fore.RED}{symbol} order failed: {e}{Style.RESET_ALL}")
 
         # wait for orders to fill
         time.sleep(5)
