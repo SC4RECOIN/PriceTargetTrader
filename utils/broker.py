@@ -11,6 +11,9 @@ class AlpacaClient(object):
         self.account = self.api.get_account()
         self.positions = sorted([p.symbol for p in self.api.list_positions()])
 
+        # cap leverage
+        self.leverage = 2
+
         # close any open orders
         self.api.cancel_all_orders()
 
@@ -25,18 +28,12 @@ class AlpacaClient(object):
 
         # sell all positions to rebalance
         print("Closing all positions and rebalancing")
-        positions = self.api.list_positions()
-        for position in positions:
-            side = "sell" if position.side == "long" else "buy"
-            qty = abs(float(position.qty))
-            self.api.submit_order(position.symbol, qty, side, "market", "day")
+        self.sell_all_positions()
 
-        # wait for orders to fill
-        time.sleep(5)
-
-        # get updated BP
+        # get updated BP (cap to leverage)
         self.account = self.api.get_account()
         buying_power = float(self.account.buying_power)
+        buying_power = min(float(self.account.cash) * self.leverage, buying_power)
 
         target_notional = buying_power / len(symbols)
 
@@ -64,13 +61,22 @@ class AlpacaClient(object):
                     f"only filled {order.filled_qty} (target {order.qty}){Style.RESET_ALL}"
                 )
 
+    def sell_all_positions(self):
+        positions = self.api.list_positions()
+        for position in positions:
+            side = "sell" if position.side == "long" else "buy"
+            qty = abs(float(position.qty))
+            self.api.submit_order(position.symbol, qty, side, "market", "day")
+
+        # wait for orders to fill
+        time.sleep(5)
+
     def await_market_open(self):
         print("waiting for market open")
         clock = self.api.get_clock()
         opening = clock.next_open.replace(tzinfo=datetime.timezone.utc).timestamp()
 
         while not clock.is_open:
-            clock = self.api.get_clock()
             curr_time = clock.timestamp.replace(
                 tzinfo=datetime.timezone.utc
             ).timestamp()
@@ -78,22 +84,28 @@ class AlpacaClient(object):
 
             print(f"{time_to_open} minutes until market open")
             time.sleep(300)
+            clock = self.api.get_clock()
 
         print("market is open")
 
-    def await_market_close(self):
+    def await_market_close(self, sell_before_close=False):
         print("waiting for market close")
         clock = self.api.get_clock()
         close = clock.next_close.replace(tzinfo=datetime.timezone.utc).timestamp()
+        wait_mins = 5
 
         while clock.is_open:
-            clock = self.api.get_clock()
             curr_time = clock.timestamp.replace(
                 tzinfo=datetime.timezone.utc
             ).timestamp()
             time_to_open = (close - curr_time) // 60
 
+            # sell if market is about to close
+            if sell_before_close and time_to_open < wait_mins:
+                self.sell_all_positions()
+
             print(f"{time_to_open} minutes until market closes")
-            time.sleep(300)
+            time.sleep(wait_mins * 60)
+            clock = self.api.get_clock()
 
         print("market is closed")

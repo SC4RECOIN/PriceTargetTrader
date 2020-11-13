@@ -25,13 +25,13 @@ max_hold = float(os.environ["MAX_HOLD"])
 
 while True:
     # each loop will take a day
-    # alpaca_client.await_market_open()
+    alpaca_client.await_market_open()
     today = datetime.today().strftime("%Y-%m-%d")
 
     dtbp = alpaca_client.account.daytrading_buying_power
     if float(dtbp) < float(alpaca_client.account.buying_power) * 0.1:
         print(f"{Fore.RED}Insufficient DTBP (${dtbp}){Style.RESET_ALL}")
-        alpaca_client.await_market_close()
+        alpaca_client.await_market_close(True)
         continue
 
     new_positions = []
@@ -73,4 +73,4 @@ while True:
     # persist price targets
     storage.insert_price_targets(targets)
 
-    alpaca_client.await_market_close()
+    alpaca_client.await_market_close(True)
