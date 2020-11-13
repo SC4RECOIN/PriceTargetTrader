@@ -22,7 +22,7 @@ stocks_df = pd.read_csv("s&p_500.csv")
 alpaca_client = AlpacaClient()
 storage = PandasStorage()
 target_thresh = float(os.environ["PRICE_TARGET_THRES"])
-max_hold = float(os.environ["MAX_HOLD"])
+max_hold = int(os.environ["MAX_HOLD"])
 
 while True:
     # each loop will take a day
@@ -51,7 +51,7 @@ while True:
                 f"{Style.RESET_ALL}"
             )
 
-            # persist target later
+            # persist targets later
             targets.append(
                 PriceTargetRow(date_fetched=today, current_price=price, **asdict(pt))
             )
