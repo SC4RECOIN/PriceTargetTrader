@@ -74,4 +74,4 @@ while True:
     # persist price targets
     storage.insert_price_targets(targets)
 
-    alpaca_client.await_market_close(True)
+    alpaca_client.await_market_close()

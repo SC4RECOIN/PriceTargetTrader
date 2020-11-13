@@ -33,7 +33,11 @@ class AlpacaClient(object):
         # get updated BP (cap to leverage)
         self.account = self.api.get_account()
         buying_power = float(self.account.buying_power)
-        buying_power = min(float(self.account.cash) * self.leverage, buying_power)
+        buying_power = min(
+            float(self.account.cash) * self.leverage,
+            buying_power,
+            self.account.daytrading_buying_power,
+        )
 
         target_notional = buying_power / len(symbols)
 
