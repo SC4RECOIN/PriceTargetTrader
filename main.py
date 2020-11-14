@@ -19,7 +19,7 @@ with open("config.json") as f:
         os.environ[key] = str(value)
 
 # stock universe
-stocks_df = pd.read_csv("nas100.csv")
+stocks_df = pd.read_csv("data/nas100.csv")
 universe = stocks_df["Symbol"]
 
 alpaca_client = AlpacaClient()
