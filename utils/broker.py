@@ -76,36 +76,27 @@ class AlpacaClient(object):
         time.sleep(5)
 
     def await_market_open(self):
-        print("waiting for market open")
-        clock = self.api.get_clock()
-        opening = clock.next_open.replace(tzinfo=datetime.timezone.utc).timestamp()
+        self._await_market(False)
 
-        while not clock.is_open:
+    def await_market_close(self):
+        self._await_market(True)
+
+    def _await_market(self, wait_close):
+        event = "close" if wait_close else "open"
+        print(f"waiting for market {event}")
+
+        clock = self.api.get_clock()
+        target_time = clock.next_close if wait_close else clock.next_open
+        target_time = target_time.replace(tzinfo=datetime.timezone.utc).timestamp()
+
+        while clock.is_open == wait_close:
             curr_time = clock.timestamp.replace(
                 tzinfo=datetime.timezone.utc
             ).timestamp()
-            time_to_open = (opening - curr_time) // 60
+            time_to_open = (target_time - curr_time) // 60
 
-            print(f"{time_to_open} minutes until market open")
+            print(f"{time_to_open} minutes until market {event}")
             time.sleep(300)
             clock = self.api.get_clock()
 
-        print("market is open")
-
-    def await_market_close(self):
-        print("waiting for market close")
-        clock = self.api.get_clock()
-        close = clock.next_close.replace(tzinfo=datetime.timezone.utc).timestamp()
-        wait_mins = 5
-
-        while clock.is_open:
-            curr_time = clock.timestamp.replace(
-                tzinfo=datetime.timezone.utc
-            ).timestamp()
-            time_to_close = (close - curr_time) // 60
-
-            print(f"{time_to_close} minutes until market closes")
-            time.sleep(wait_mins * 60)
-            clock = self.api.get_clock()
-
-        print("market is closed")
+        print(f"market {event}")
