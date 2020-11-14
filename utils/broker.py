@@ -92,7 +92,7 @@ class AlpacaClient(object):
 
         print("market is open")
 
-    def await_market_close(self, sell_before_close=False):
+    def await_market_close(self):
         print("waiting for market close")
         clock = self.api.get_clock()
         close = clock.next_close.replace(tzinfo=datetime.timezone.utc).timestamp()
@@ -103,10 +103,6 @@ class AlpacaClient(object):
                 tzinfo=datetime.timezone.utc
             ).timestamp()
             time_to_close = (close - curr_time) // 60
-
-            # sell if market is about to close
-            if sell_before_close and time_to_close < wait_mins:
-                self.sell_all_positions()
 
             print(f"{time_to_close} minutes until market closes")
             time.sleep(wait_mins * 60)

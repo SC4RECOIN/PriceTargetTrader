@@ -2,6 +2,10 @@
 
 Holds stocks with price targets above a set threshold. Rebalances everyday at market open.
 
+## Schedule
+
+The program will rebalance every Monday morning. This can be changed with `schedule.every().monday.at("09:15").do(rebalance_task)` in `main.py` (see [python scheduler](https://pypi.org/project/schedule/)). The rebalance function will wait for the market to open before entering positions the function can be run early to fetch price targets.
+
 ## Data Source
 
 Price target data is being pulled from [IEXCloud](https://iexcloud.io/docs/api/#price-target).
