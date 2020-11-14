@@ -29,6 +29,7 @@ max_hold = int(os.environ["MAX_HOLD"])
 
 
 def rebalance_task():
+    print("rebalance triggered")
     alpaca_client.await_market_open()
     today = datetime.today().strftime("%Y-%m-%d")
 
@@ -77,6 +78,7 @@ def rebalance_task():
 schedule.every().monday.at("09:15").do(rebalance_task)
 
 # run rebalance once a week
+print("waiting for task trigger")
 while True:
     schedule.run_pending()
     time.sleep(60)
