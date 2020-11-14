@@ -1,6 +1,6 @@
 # Price Target Trader ✨
 
-Holds stocks with price targets above a set threshold. Rebalances everyday at market open.
+Holds stocks with price targets above a set threshold. Rebalances weekly at market open.
 
 ## Schedule
 
