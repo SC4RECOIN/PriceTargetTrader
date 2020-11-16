@@ -30,7 +30,6 @@ max_hold = int(os.environ["MAX_HOLD"])
 
 def rebalance_task():
     print("rebalance triggered")
-    alpaca_client.await_market_open()
     today = datetime.today().strftime("%Y-%m-%d")
 
     new_positions = []
