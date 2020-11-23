@@ -20,6 +20,13 @@ def get_price_target(symbol: str) -> Union[PriceTarget, None]:
         stock = Stock(symbol)
         pt = stock.get_price_target()
 
+        # https://iexcloud.io/docs/api/#currency-conversion
+        if pt["currency"] == "CNY":
+            pt["currency"] = "USD"
+            pt["priceTargetAverage"] = pt["priceTargetAverage"] * 0.15188
+            pt["priceTargetHigh"] = pt["priceTargetHigh"] * 0.15188
+            pt["priceTargetLow"] = pt["priceTargetLow"] * 0.15188
+
         return PriceTarget(
             symbol=pt["symbol"],
             updated_date=datetime.strptime(pt["updatedDate"], "%Y-%m-%d"),
