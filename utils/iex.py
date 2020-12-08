@@ -18,7 +18,10 @@ class PriceTarget:
 def get_price_target(symbol: str) -> Union[PriceTarget, None]:
     try:
         stock = Stock(symbol)
+
+        # returns pandas object
         pt = stock.get_price_target()
+        pt = pt.iloc[0].to_dict()
 
         # https://iexcloud.io/docs/api/#currency-conversion
         if pt["currency"] == "CNY":
@@ -36,10 +39,11 @@ def get_price_target(symbol: str) -> Union[PriceTarget, None]:
             number_of_analysts=pt["numberOfAnalysts"],
             currency=pt["currency"],
         )
-    except:
+    except Exception as e:
+        print(e)
         return None
 
 
 def get_price(symbol: str) -> float:
     stock = Stock(symbol)
-    return stock.get_price()
+    return float(stock.get_price().iloc[0])

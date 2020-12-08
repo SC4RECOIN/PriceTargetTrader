@@ -48,4 +48,28 @@ The config will be loaded as env variables. The IEXCloud and Alpaca SDK will see
 }
 ```
 
+### Output
+
+```
+...
+...
+86    SBUX  - 100.82  target: 97.6  -> -3.19%
+87    SNPS  - 238.435 target: 263.43 -> 10.48%
+88    TMUS  - 132.535 target: 148.75 -> 12.23%
+89    TTWO  - 184.86  target: 191.08 -> 3.36%
+90    TSLA  - 627.56  target: 375.66 -> -40.14%
+91    TXN   - 165.91  target: 158.11 -> -4.70%
+92    TCOM  - 33.905  target: 34.1669248 -> 0.77%
+93    ULTA  - 271.36  target: 284.42 -> 4.81%
+94    VRSN  - 205.9   target: 240.58 -> 16.84%
+95    VRSK  - 194.12  target: 206.53 -> 6.39%
+96    VRTX  - 226.255 target: 288.44 -> 27.48%
+97    WBA   - 41.86   target: 39.83 -> -4.85%
+98    WDAY  - 227.405 target: 247.97 -> 9.04%
+waiting for market open
+market open
+entering 10 new positions
+Closing all positions and rebalancing
+```
+
 **Requires Python >= 3.7**
